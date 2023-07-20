@@ -6,7 +6,7 @@ from torch.nn.parameter import Parameter
 from operator import xor
 from typing import Optional
 
-from transparent_background.modules.layers import *
+from .layers import *
 
 class SICA(nn.Module):
     def __init__(self, in_channel, out_channel=1, depth=64, base_size=None, stage=None, lmap_in=False):

@@ -1,8 +1,8 @@
+import os
 import torch
 from torchvision import transforms
 import torch.nn.functional as F
 import numpy as np
-import os
 
 from model.inspyrenet import InSPyReNet_SwinB, InSPyReNet_Res2Net50
 
@@ -29,7 +29,7 @@ class RemoveBackGround:
             self.device = "cpu"
 
         self.model.eval()
-        self.model.load_state_dict(torch.load(self.meta["ckpt_name"]), strict=True)
+        self.model.load_state_dict(torch.load(self.meta["ckpt_name"], map_location=torch.device(device)), strict=True)
         self.model = self.model.to(self.device)
 
         self.transform = transforms.Compose([transforms.Resize(self.meta["base_size"]),
