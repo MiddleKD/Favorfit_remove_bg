@@ -62,10 +62,10 @@ class RemoveBackGround:
 if __name__ == "__main__":
     from PIL import Image
     import time
-    image = Image.open("3840_2400_bagandproduct.jpg").convert('RGB')
-    
-    remover = RemoveBackGround(backbone="swinB", device="cuda")
+    image = Image.open("3840_2400_bagandproduct.jpg")
+
     start_time = time.time()
+    remover = RemoveBackGround(backbone="swinB", device="cpu")
     result = remover.process(image)
     end_time = time.time()
 
