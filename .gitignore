@@ -1,5 +1,3 @@
-images/
-results/
 __pycache__/
 *.pth
 .venv/

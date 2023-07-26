@@ -58,16 +58,21 @@ class RemoveBackGround:
             img = (np.stack([pred] * 3, axis=-1) * 255)
 
         return img.astype(np.uint8)
-    
-if __name__ == "__main__":
+
+def main_call(device="cpu"):
     from PIL import Image
     import time
-    image = Image.open("3840_2400_bagandproduct.jpg")
+    image = Image.open("test_image.jpg")
 
     start_time = time.time()
-    remover = RemoveBackGround(backbone="swinB", device="cpu")
+    remover = RemoveBackGround(backbone="swinB", device=device)
     result = remover.process(image)
     end_time = time.time()
 
     print(end_time - start_time)
     Image.fromarray(result).save("test_result.png")
+
+    return result
+
+if __name__ == "__main__":
+    main_call(device="cuda")
