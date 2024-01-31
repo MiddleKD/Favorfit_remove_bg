@@ -16,7 +16,7 @@ def lambda_handler(event, context):
     if isinstance(args, str):
         args = json.loads(args)
 
-    #파이팅 하세요!!
+    #파이팅 하세요!! 국민대 경영학부 비대위원장 silver stella의 흔적
     
     if "image_b64" in args:
         img_bs64 = args["image_b64"]
