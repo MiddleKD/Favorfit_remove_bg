@@ -3,14 +3,16 @@ import torch
 from PIL import Image
 from torchvision import transforms
 import torch.nn.functional as F
+from torch import nn
 import numpy as np
 
 from model.inspyrenet import InSPyReNet_SwinB, InSPyReNet_Res2Net50
 
 
 def call_model(ckpt, device):
-    class RemoveBackGround:
+    class RemoveBackGround(nn.Module):
         def __init__(self, model_path, device=None, types="map"):
+            super().__init__()
             backbone = "swinB"
             self.meta = {'base_size': (384, 384),
                         'threshold': 512,
@@ -39,7 +41,7 @@ def call_model(ckpt, device):
 
             # print(f"import model succes, device={self.device}")
 
-        def __call__(self, img):
+        def forward(self, img):
             shape = img.size[::-1]
             x = self.transform(img)
             x = x.unsqueeze(0)
