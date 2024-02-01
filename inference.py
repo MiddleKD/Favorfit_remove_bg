@@ -37,7 +37,7 @@ def call_model(ckpt, device):
             
             self.types = types
 
-            print(f"import model succes, device={self.device}")
+            # print(f"import model succes, device={self.device}")
 
         def __call__(self, img):
             shape = img.size[::-1]
