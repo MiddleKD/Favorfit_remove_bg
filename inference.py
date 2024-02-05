@@ -64,8 +64,10 @@ def call_model(ckpt, device):
     return remover
 
 
-def inference(img_pil, model):
+def inference(img_pil, model, idle_device="cpu", device="cuda"):
+    model = model.to(device)
     result = model(img_pil)
+    model = model.to(idle_device)
     return Image.fromarray(result)
 
 
