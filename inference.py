@@ -8,15 +8,31 @@ import numpy as np
 
 from model.inspyrenet import InSPyReNet_SwinB, InSPyReNet_Res2Net50
 
+class dynamic_resize:
+    def __init__(self, L=1280): 
+        self.L = L
+                    
+    def __call__(self, img):
+        size = list(img.size)
+        if (size[0] >= size[1]) and size[1] > self.L: 
+            size[0] = size[0] / (size[1] / self.L)
+            size[1] = self.L
+        elif (size[1] > size[0]) and size[0] > self.L:
+            size[1] = size[1] / (size[0] / self.L)
+            size[0] = self.L
+        size = (int(round(size[0] / 32)) * 32, int(round(size[1] / 32)) * 32)
+    
+        return img.resize(size, Image.BILINEAR)
 
 def call_model(ckpt, device):
     class RemoveBackGround(nn.Module):
         def __init__(self, model_path, device=None, types="map"):
             super().__init__()
             backbone = "swinB"
-            self.meta = {'base_size': (384, 384),
-                        'threshold': 512,
-                        'ckpt_name': model_path}
+            self.meta = {'base_size': [1024, 1024],
+                        'threshold': None,
+                        'ckpt_name': model_path,
+                        'resize': dynamic_resize(L=1280)}
             if device is not None:
                 self.device = device
             else:
@@ -34,12 +50,10 @@ def call_model(ckpt, device):
             self.model.load_state_dict(torch.load(self.meta["ckpt_name"], map_location="cpu"), strict=True)
             self.model = self.model.to(self.device)
 
-            self.transform = transforms.Compose([transforms.Resize(self.meta["base_size"]),
+            self.transform = transforms.Compose([dynamic_resize(),
                                                 transforms.ToTensor(),])
             
             self.types = types
-
-            # print(f"import model succes, device={self.device}")
 
         def forward(self, img):
             shape = img.size[::-1]
@@ -87,4 +101,4 @@ if __name__ == "__main__":
     main_call(model_path="/home/mlfavorfit/Desktop/lib_link/favorfit/kjg/0_model_weights/remove_bg/remove_bg.pth",
               root_dir="/media/mlfavorfit/sdb/cat_toy/images", 
               save_dir="/media/mlfavorfit/sdb/cat_toy/images2", 
-              device="cuda")
+              device="cpu")
