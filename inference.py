@@ -101,4 +101,4 @@ if __name__ == "__main__":
     main_call(model_path="/home/mlfavorfit/Desktop/lib_link/favorfit/kjg/0_model_weights/remove_bg/remove_bg.pth",
               root_dir="/media/mlfavorfit/sdb/cat_toy/images", 
               save_dir="/media/mlfavorfit/sdb/cat_toy/images2", 
-              device="cpu")
+              device="cuda")
